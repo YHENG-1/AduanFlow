@@ -177,3 +177,15 @@ def seed_database():
 @app.get('/')
 def root():
     return {'message': 'AduanFlow AI Backend API is running', 'docs': '/docs'}
+
+
+@app.post('/api/debug/sync')
+def debug_sync():
+    """Manually trigger one Gmail sync cycle and return the raw result/error."""
+    import traceback
+    from backend.app.services.gmail_sync_agent import gmail_sync_agent
+    try:
+        result = gmail_sync_agent.run_sync_cycle()
+        return {"ok": True, "result": result}
+    except Exception as e:
+        return {"ok": False, "error": str(e), "traceback": traceback.format_exc()}
