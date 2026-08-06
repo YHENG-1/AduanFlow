@@ -4,7 +4,7 @@
 
 AduanFlow is an **agentic AI pipeline** that automatically ingests customer complaints from email, extracts evidence (even from scanned PDFs via OCR), classifies claims under Bank Negara Malaysia (BNM) rules, verifies against banking data, resolves eligible disputes, and responds with BNM/FMOS-compliant emails — all without human touch for high-confidence cases.
 
----
+--- 
 
 ## ✨ Features
 
