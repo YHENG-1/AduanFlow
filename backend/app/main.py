@@ -189,3 +189,49 @@ def debug_sync():
         return {"ok": True, "result": result}
     except Exception as e:
         return {"ok": False, "error": str(e), "traceback": traceback.format_exc()}
+
+
+@app.post('/api/debug/smtp')
+def debug_smtp():
+    """Test outbound SMTP connectivity from the server (the actual render instance)."""
+    import os, socket, smtplib, traceback
+    from dotenv import load_dotenv
+    out = {"host": "smtp.gmail.com", "port": 587, "dns_ok": None, "tcp_ok": None, "starttls_ok": None, "smtp_auth_ok": None, "has_password": False}
+    try:
+        try:
+            ip = socket.gethostbyname("smtp.gmail.com")
+            out["dns_ok"] = ip
+        except Exception as e:
+            out["dns_error"] = str(e)
+        try:
+            s = socket.create_connection(("smtp.gmail.com", 587), timeout=8)
+            out["tcp_ok"] = True
+            s.close()
+        except Exception as e:
+            out["tcp_ok"] = False
+            out["tcp_error"] = repr(e)
+        pw = os.getenv("GMAIL_APP_PASSWORD")
+        if not pw:
+            try:
+                from sqlmodel import Session
+                from backend.app.database import engine
+                from backend.app.models.settings import SystemSettings
+                from backend.app.services.encryption_service import encryption_service
+                with Session(engine) as session:
+                    so = session.get(SystemSettings, "global_settings")
+                    if so and so.gmail_app_password_encrypted:
+                        pw = encryption_service.decrypt(so.gmail_app_password_encrypted)
+            except Exception:
+                pass
+        out["has_password"] = bool(pw)
+        try:
+            server = smtplib.SMTP("smtp.gmail.com", 587, timeout=8)
+            server.ehlo()
+            server.starttls()
+            out["starttls_ok"] = True
+        except Exception as e:
+            out["starttls_ok"] = False
+            out["starttls_error"] = repr(e)
+        return {"ok": True, "result": out}
+    except Exception as e:
+        return {"ok": False, "error": str(e), "traceback": traceback.format_exc()}
