@@ -26,7 +26,7 @@ except Exception as e:
     _gemini_available = False
     _gemini_client = None
 
-_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-latest")
+_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 
 
 def get_llm_agent_brief(agent_name: str, agent_role: str, case: "Case") -> str:

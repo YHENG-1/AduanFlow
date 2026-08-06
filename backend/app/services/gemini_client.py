@@ -17,7 +17,7 @@ for _path in _env_paths:
         load_dotenv(dotenv_path=_path)
         break
 
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 
 
 def get_gemini_client():

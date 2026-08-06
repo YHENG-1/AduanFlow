@@ -33,7 +33,7 @@ def _get_gemini_client():
         logger.error(f"[Copilot] Gemini client creation failed: {e}")
         return None
 
-_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-flash-latest")
+_GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 
 
 def _build_context(cases: List[Case], overview: Dict[str, Any]) -> str:
