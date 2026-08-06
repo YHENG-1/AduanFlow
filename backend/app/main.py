@@ -210,6 +210,17 @@ def debug_smtp():
         except Exception as e:
             out["tcp_ok"] = False
             out["tcp_error"] = repr(e)
+        # Retry forcing IPv4 via an explicit IPv4 sockaddr (bypasses IPv6 socket attempts)
+        out["tcp4_ok"] = None
+        try:
+            s4 = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            s4.settimeout(8)
+            s4.connect(("173.194.202.108", 587))
+            out["tcp4_ok"] = True
+            s4.close()
+        except Exception as e:
+            out["tcp4_ok"] = False
+            out["tcp4_error"] = repr(e)
         pw = os.getenv("GMAIL_APP_PASSWORD")
         if not pw:
             try:
