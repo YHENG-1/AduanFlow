@@ -69,8 +69,8 @@ except Exception as primary_e:
             ref_match = re.search(r'db\.([a-zA-Z0-9]+)\.supabase\.co', db_url)
             if ref_match:
                 proj_ref = ref_match.group(1)
-                pooler_url = db_url.replace(f"db.{proj_ref}.supabase.co:5432", "aws-0-ap-northeast-1.pooler.supabase.com:6543")
-                pooler_url = pooler_url.replace(f"db.{proj_ref}.supabase.co", "aws-0-ap-northeast-1.pooler.supabase.com:6543")
+                pooler_url = db_url.replace(f"db.{proj_ref}.supabase.co:5432", "aws-0-ap-northeast-2.pooler.supabase.com:6543")
+                pooler_url = pooler_url.replace(f"db.{proj_ref}.supabase.co", "aws-0-ap-northeast-2.pooler.supabase.com:6543")
                 if "postgres:" in pooler_url and f"postgres.{proj_ref}:" not in pooler_url:
                     pooler_url = pooler_url.replace("postgres:", f"postgres.{proj_ref}:", 1)
 
